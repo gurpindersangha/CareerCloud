@@ -7,7 +7,7 @@ using System.Text;
 namespace CareerCloud.Pocos
 {
     [Table("Company_Job_Skills")]
-    public class CompanyJobSkillPoco
+    public class CompanyJobSkillPoco : IPoco
     {
         [Key]
         public Guid Id { get; set; }

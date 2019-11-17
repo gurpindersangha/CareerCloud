@@ -7,7 +7,7 @@ using System.Text;
 namespace CareerCloud.Pocos
 {
     [Table("Applicant_Work_History")]
-    public class ApplicantWorkHistoryPoco
+    public class ApplicantWorkHistoryPoco : IPoco
     {
         [Key]
         public Guid Id { get; set; }
