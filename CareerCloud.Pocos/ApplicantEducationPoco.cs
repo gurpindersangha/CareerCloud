@@ -26,8 +26,8 @@ namespace CareerCloud.Pocos
         [Column("Start_Date")]
         public DateTime? StartDate { get; set; }
 
-        [Column("Compilation_Date")]
-        public DateTime? CompilationDate { get; set; }
+        [Column("Completion_Date")]
+        public DateTime? CompletionDate { get; set; }
 
         [Column("Completion_Percent")]
         public byte? CompletionPercent { get; set; }

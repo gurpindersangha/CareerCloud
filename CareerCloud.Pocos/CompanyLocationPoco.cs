@@ -22,22 +22,22 @@ namespace CareerCloud.Pocos
         
         [Column("State_Province_Code")]
         [StringLength(10)]
-        public string StateProvinceCode{ get; set; }
+        public string Province{ get; set; }
         
         
         [Column("Street_Address")]
         [StringLength(100)]
-        public string StreetAddress{ get; set; }
+        public string Street{ get; set; }
         
         
         [Column("City_Town")]
         [StringLength(100)]
-        public string CityTown { get; set; }
+        public string City { get; set; }
         
         
         [Column("Zip_Postal_Code")]
         [StringLength(20)]
-        public string ZipPostalCode { get; set; }
+        public string PostalCode { get; set; }
         
         [Column("Time_Stamp")]
         public byte[] TimeStamp { get; set; }

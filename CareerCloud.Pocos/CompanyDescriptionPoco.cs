@@ -17,7 +17,7 @@ namespace CareerCloud.Pocos
 
         [StringLength(10)]
         [ForeignKey("")]
-        public string LanguageID { get; set; }
+        public string LanguageId { get; set; }
 
         [Column("Company_Name")]
         [StringLength(50)]

@@ -21,7 +21,7 @@ namespace CareerCloud.Pocos
         
         [Column("Job_Descriptions")]
         [StringLength(1000)]
-        public string JobDescription { get; set; }
+        public string JobDescriptions { get; set; }
         
         [Column("Time_Stamp")]
         public byte[] TimeStamp { get; set; }

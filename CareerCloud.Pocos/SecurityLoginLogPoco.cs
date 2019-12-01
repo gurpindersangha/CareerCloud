@@ -7,7 +7,7 @@ using System.Text;
 namespace CareerCloud.Pocos
 {
     [Table("Security_Logins_Log")]
-    public class SecurityLoginLogPoco : IPoco
+    public class SecurityLoginsLogPoco : IPoco
     {
         [Key]
         public Guid Id { get; set; }
@@ -15,9 +15,9 @@ namespace CareerCloud.Pocos
         [ForeignKey("")]
         public Guid Login { get; set; }
         
-        [Column("Source_Ip")]
+        [Column("Source_IP")]
         [StringLength(15)]
-        public string SourceIp { get; set; }
+        public string SourceIP { get; set; }
         
         
         [Column("Logon_Date")]
