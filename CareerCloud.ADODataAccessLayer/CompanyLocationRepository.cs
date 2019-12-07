@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -71,7 +72,43 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<CompanyLocationPoco> GetAll(params Expression<Func<CompanyLocationPoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [Id]
+                                      ,[Company]
+                                      ,[Country_Code]
+                                      ,[State_Province_Code]
+                                      ,[Street_Address]
+                                      ,[City_Town]
+                                      ,[Zip_Postal_Code]
+                                      ,[Time_Stamp]
+                                  FROM [dbo].[Company_Locations]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                CompanyLocationPoco[] pocos = new CompanyLocationPoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    CompanyLocationPoco poco = new CompanyLocationPoco();
+                    poco.Id = reader.GetGuid(0);
+                    poco.Company = reader.GetGuid(1);
+                    poco.CountryCode = reader.GetString(2);
+                    poco.Province = reader.GetString(3);
+                    poco.Street = reader.GetString(4);
+                    poco.City = reader.GetString(5);
+                    poco.PostalCode = reader.GetString(5);
+                    poco.TimeStamp = (byte[])reader[7];
+
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<CompanyLocationPoco> GetList(Expression<Func<CompanyLocationPoco, bool>> where, params Expression<Func<CompanyLocationPoco, object>>[] navigationProperties)

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -65,7 +66,37 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<SecurityLoginsLogPoco> GetAll(params Expression<Func<SecurityLoginsLogPoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [Id]
+                                      ,[Login]
+                                      ,[Source_IP]
+                                      ,[Logon_Date]
+                                      ,[Is_Succesful]
+                                  FROM [dbo].[Security_Logins_Log]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                SecurityLoginsLogPoco[] pocos = new SecurityLoginsLogPoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    SecurityLoginsLogPoco poco = new SecurityLoginsLogPoco();
+                    poco.Id = reader.GetGuid(0);
+                    poco.Login = reader.GetGuid(1);
+                    poco.SourceIP = reader.GetString(3);
+                    poco.LogonDate = reader.GetDateTime(4);
+                    poco.IsSuccesful = reader.GetBoolean(5);
+                    
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<SecurityLoginsLogPoco> GetList(Expression<Func<SecurityLoginsLogPoco, bool>> where, params Expression<Func<SecurityLoginsLogPoco, object>>[] navigationProperties)

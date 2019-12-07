@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -62,7 +63,37 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<CompanyJobEducationPoco> GetAll(params Expression<Func<CompanyJobEducationPoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [Id]
+                                      ,[Job]
+                                      ,[Major]
+                                      ,[Importance]
+                                      ,[Time_Stamp]
+                                  FROM [dbo].[Company_Job_Educations]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                CompanyJobEducationPoco[] pocos = new CompanyJobEducationPoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    CompanyJobEducationPoco poco = new CompanyJobEducationPoco();
+                    poco.Id = reader.GetGuid(0);
+                    poco.Job = reader.GetGuid(1);
+                    poco.Major = reader.GetString(2);
+                    poco.Importance = reader.GetInt16(3);
+                    poco.TimeStamp = (byte[])reader[4];
+
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<CompanyJobEducationPoco> GetList(Expression<Func<CompanyJobEducationPoco, bool>> where, params Expression<Func<CompanyJobEducationPoco, object>>[] navigationProperties)

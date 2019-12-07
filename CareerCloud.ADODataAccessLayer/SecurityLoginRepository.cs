@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -89,7 +90,55 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<SecurityLoginPoco> GetAll(params Expression<Func<SecurityLoginPoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [Id]
+                                      ,[Login]
+                                      ,[Password]
+                                      ,[Created_Date]
+                                      ,[Password_Update_Date]
+                                      ,[Agreement_Accepted_Date]
+                                      ,[Is_Locked]
+                                      ,[Is_Inactive]
+                                      ,[Email_Address]
+                                      ,[Phone_Number]
+                                      ,[Full_Name]
+                                      ,[Force_Change_Password]
+                                      ,[Prefferred_Language]
+                                      ,[Time_Stamp]
+                                  FROM [dbo].[Security_Logins]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                SecurityLoginPoco[] pocos = new SecurityLoginPoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    SecurityLoginPoco poco = new SecurityLoginPoco();
+                    poco.Id = reader.GetGuid(0);
+                    poco.Login = reader.GetString(1);
+                    poco.Password = reader.GetString(3);
+                    poco.Created = reader.GetDateTime(4);
+                    poco.PasswordUpdate = reader.GetDateTime(5);
+                    poco.AgreementAccepted = reader.GetDateTime(6);
+                    poco.IsLocked = reader.GetBoolean(7);
+                    poco.IsInactive = reader.GetBoolean(8);
+                    poco.EmailAddress = reader.GetString(9);
+                    poco.PhoneNumber = reader.GetString(10);
+                    poco.FullName = reader.GetString(11);
+                    poco.ForceChangePassword = reader.GetBoolean(12);
+                    poco.PrefferredLanguage = reader.GetString(13);
+                    poco.TimeStamp = (byte[])reader[14];
+
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<SecurityLoginPoco> GetList(Expression<Func<SecurityLoginPoco, bool>> where, params Expression<Func<SecurityLoginPoco, object>>[] navigationProperties)

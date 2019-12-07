@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -65,7 +66,39 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<CompanyDescriptionPoco> GetAll(params Expression<Func<CompanyDescriptionPoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [Id]
+                                      ,[Company]
+                                      ,[LanguageID]
+                                      ,[Company_Name]
+                                      ,[Company_Description]
+                                      ,[Time_Stamp]
+                                  FROM [dbo].[Company_Descriptions]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                CompanyDescriptionPoco[] pocos = new CompanyDescriptionPoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    CompanyDescriptionPoco poco = new CompanyDescriptionPoco();
+                    poco.Id = reader.GetGuid(0);
+                    poco.Company = reader.GetGuid(1);
+                    poco.LanguageId = reader.GetString(2);
+                    poco.CompanyName = reader.GetString(3);
+                    poco.CompanyDescription = reader.GetString(4);
+                    poco.TimeStamp = (byte[])reader[5];
+
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<CompanyDescriptionPoco> GetList(Expression<Func<CompanyDescriptionPoco, bool>> where, params Expression<Func<CompanyDescriptionPoco, object>>[] navigationProperties)

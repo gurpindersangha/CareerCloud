@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -81,7 +82,49 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<ApplicantProfilePoco> GetAll(params Expression<Func<ApplicantProfilePoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [Id]
+                                      ,[Login]
+                                      ,[Current_Salary]
+                                      ,[Current_Rate]
+                                      ,[Currency]
+                                      ,[Country_Code]
+                                      ,[State_Province_Code]
+                                      ,[Street_Address]
+                                      ,[City_Town]
+                                      ,[Zip_Postal_Code]
+                                      ,[Time_Stamp]
+                                  FROM [dbo].[Applicant_Profiles]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                ApplicantProfilePoco[] pocos = new ApplicantProfilePoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    ApplicantProfilePoco poco = new ApplicantProfilePoco();
+                    poco.Id = reader.GetGuid(0);
+                    poco.Login = reader.GetGuid(1);
+                    poco.CurrentSalary = reader.GetDecimal(2);
+                    poco.CurrentRate = reader.GetDecimal(3);
+                    poco.Currency = reader.GetString(4);
+                    poco.Country = reader.GetString(5);
+                    poco.Province = reader.GetString(6);
+                    poco.Street = reader.GetString(7);
+                    poco.City = reader.GetString(8);
+                    poco.PostalCode = reader.GetString(9);
+                    poco.TimeStamp = (byte[])reader[10];
+
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<ApplicantProfilePoco> GetList(Expression<Func<ApplicantProfilePoco, bool>> where, params Expression<Func<ApplicantProfilePoco, object>>[] navigationProperties)

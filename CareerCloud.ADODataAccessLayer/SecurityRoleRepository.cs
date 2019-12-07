@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -60,7 +61,33 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<SecurityRolePoco> GetAll(params Expression<Func<SecurityRolePoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [Id]
+                                      ,[Role]
+                                      ,[Is_Inactive]
+                                  FROM [dbo].[Security_Roles]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                SecurityRolePoco[] pocos = new SecurityRolePoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    SecurityRolePoco poco = new SecurityRolePoco();
+                    poco.Id = reader.GetGuid(0);
+                    poco.Role = reader.GetString(1);
+                    poco.IsInactive = reader.GetBoolean(2);
+
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<SecurityRolePoco> GetList(Expression<Func<SecurityRolePoco, bool>> where, params Expression<Func<SecurityRolePoco, object>>[] navigationProperties)

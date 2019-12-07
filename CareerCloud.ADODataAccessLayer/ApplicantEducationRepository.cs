@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -71,7 +72,43 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<ApplicantEducationPoco> GetAll(params Expression<Func<ApplicantEducationPoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [Id]
+                                      ,[Applicant]
+                                      ,[Major]
+                                      ,[Certificate_Diploma]
+                                      ,[Start_Date]
+                                      ,[Completion_Date]
+                                      ,[Completion_Percent]
+                                      ,[Time_Stamp]
+                                  FROM [dbo].[Applicant_Educations]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                ApplicantEducationPoco[] pocos = new ApplicantEducationPoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    ApplicantEducationPoco poco = new ApplicantEducationPoco();
+                    poco.Id = reader.GetGuid(0);
+                    poco.Applicant = Guid.Parse((string)reader["Applicant"]);
+                    poco.Major = reader.GetString(2);
+                    poco.CertificateDiploma = reader.GetString(3);
+                    poco.StartDate = reader.GetDateTime(4);
+                    poco.CompletionDate = reader.GetDateTime(5);
+                    poco.CompletionPercent = reader.GetByte(6);
+                    poco.TimeStamp = (byte[])reader[7];
+
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<ApplicantEducationPoco> GetList(Expression<Func<ApplicantEducationPoco, bool>> where, params Expression<Func<ApplicantEducationPoco, object>>[] navigationProperties)

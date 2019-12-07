@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -64,7 +65,37 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<ApplicantJobApplicationPoco> GetAll(params Expression<Func<ApplicantJobApplicationPoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [Id]
+                                      ,[Applicant]
+                                      ,[Job]
+                                      ,[Application_Date]
+                                      ,[Time_Stamp]
+                                  FROM [dbo].[Applicant_Job_Applications]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                ApplicantJobApplicationPoco[] pocos = new ApplicantJobApplicationPoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    ApplicantJobApplicationPoco poco = new ApplicantJobApplicationPoco();
+                    poco.Id = reader.GetGuid(0);
+                    poco.Applicant = Guid.Parse((string)reader["Applicant"]);
+                    poco.Job = reader.GetGuid(2);
+                    poco.ApplicationDate = reader.GetDateTime(3);
+                    poco.TimeStamp = (byte[])reader[4];
+
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<ApplicantJobApplicationPoco> GetList(Expression<Func<ApplicantJobApplicationPoco, bool>> where, params Expression<Func<ApplicantJobApplicationPoco, object>>[] navigationProperties)

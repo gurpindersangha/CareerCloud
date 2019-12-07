@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -59,7 +60,33 @@ namespace CareerCloud.ADODataAccessLayer
 
         public IList<SystemLanguageCodePoco> GetAll(params Expression<Func<SystemLanguageCodePoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = @"SELECT [LanguageID]
+                                      ,[Name]
+                                      ,[Native_Name]
+                                  FROM [dbo].[System_Language_Codes]";
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                SystemLanguageCodePoco[] pocos = new SystemLanguageCodePoco[500];
+                int index = 0;
+                while (reader.Read())
+                {
+                    SystemLanguageCodePoco poco = new SystemLanguageCodePoco();
+                    poco.LanguageID = reader.GetString(0);
+                    poco.Name = reader.GetString(1);
+                    poco.NativeName = reader.GetString(2);
+
+                    pocos[index] = poco;
+                    index++;
+                }
+                conn.Close();
+                return pocos.Where(a => a != null).ToList();
+
+            }
         }
 
         public IList<SystemLanguageCodePoco> GetList(Expression<Func<SystemLanguageCodePoco, bool>> where, params Expression<Func<SystemLanguageCodePoco, object>>[] navigationProperties)
