@@ -74,7 +74,22 @@ namespace CareerCloud.ADODataAccessLayer
 
         public void Remove(params SecurityLoginsRolePoco[] items)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                foreach (var poco in items)
+                {
+                    cmd.CommandText = @"DELETE Security_Logins_Roles
+                                         WHERE [Id]=@Id";
+
+                    cmd.Parameters.AddWithValue("@Id", poco.Id);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
         }
 
         public void Update(params SecurityLoginsRolePoco[] items)

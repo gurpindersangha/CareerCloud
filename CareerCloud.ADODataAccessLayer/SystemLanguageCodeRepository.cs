@@ -74,7 +74,22 @@ namespace CareerCloud.ADODataAccessLayer
 
         public void Remove(params SystemLanguageCodePoco[] items)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                foreach (var poco in items)
+                {
+                    cmd.CommandText = @"DELETE System_Language_Codes
+                                         WHERE [LanguageID]=@LanguageID";
+
+                    cmd.Parameters.AddWithValue("@LanguageID", poco.LanguageID);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
         }
 
         public void Update(params SystemLanguageCodePoco[] items)

@@ -72,7 +72,22 @@ namespace CareerCloud.ADODataAccessLayer
 
         public void Remove(params SystemCountryCodePoco[] items)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                foreach (var poco in items)
+                {
+                    cmd.CommandText = @"DELETE System_Country_Codes
+                                         WHERE [Code]=@Code";
+
+                    cmd.Parameters.AddWithValue("@Code", poco.Code);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
         }
 
         public void Update(params SystemCountryCodePoco[] items)
