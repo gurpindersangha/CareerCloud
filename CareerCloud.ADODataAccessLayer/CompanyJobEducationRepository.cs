@@ -82,7 +82,30 @@ namespace CareerCloud.ADODataAccessLayer
 
         public void Update(params CompanyJobEducationPoco[] items)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                foreach (var poco in items)
+                {
+                    cmd.CommandText = @"UPDATE [dbo].[Company_Job_Educations]
+                                       SET [Id] = @Id
+                                          ,[Job] = @Job
+                                          ,[Major] = @Major
+                                          ,[Importance] = @Importance
+                                         WHERE [Id]=@Id";
+
+                    cmd.Parameters.AddWithValue("@Id", poco.Id);
+                    cmd.Parameters.AddWithValue("@Job", poco.Job);
+                    cmd.Parameters.AddWithValue("@Major", poco.Major);
+                    cmd.Parameters.AddWithValue("@Importance", poco.Importance);
+
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
         }
     }
 }

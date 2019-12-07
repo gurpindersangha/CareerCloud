@@ -95,7 +95,37 @@ namespace CareerCloud.ADODataAccessLayer
 
         public void Update(params ApplicantSkillPoco[] items)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                foreach (var poco in items)
+                {
+                    cmd.CommandText = @"UPDATE [dbo].[Applicant_Skills]
+                                       SET [Id] = @Id
+                                          ,[Applicant] = @Applicant
+                                          ,[Skill] = @Skill
+                                          ,[Skill_Level] = @Skill_Level
+                                          ,[Start_Month] = @Start_Month
+                                          ,[Start_Year] = @Start_Year
+                                          ,[End_Month] = @End_Month
+                                          ,[End_Year] = @End_Year
+                                         WHERE [Id]=@Id";
+
+                    cmd.Parameters.AddWithValue("@Id", poco.Id);
+                    cmd.Parameters.AddWithValue("@Applicant", poco.Applicant);
+                    cmd.Parameters.AddWithValue("@Skill", poco.Skill);
+                    cmd.Parameters.AddWithValue("@Skill_Level", poco.SkillLevel);
+                    cmd.Parameters.AddWithValue("@Start_Month", poco.StartMonth);
+                    cmd.Parameters.AddWithValue("@Start_Year", poco.StartYear);
+                    cmd.Parameters.AddWithValue("@End_Month", poco.EndMonth);
+                    cmd.Parameters.AddWithValue("@End_Year", poco.EndYear);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
         }
     }
 }

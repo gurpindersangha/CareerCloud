@@ -77,7 +77,25 @@ namespace CareerCloud.ADODataAccessLayer
 
         public void Update(params SystemCountryCodePoco[] items)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                foreach (var poco in items)
+                {
+                    cmd.CommandText = @"UPDATE [dbo].[System_Country_Codes]
+                                       SET [Code] = @Code
+                                          ,[Name] = @Name
+                                         WHERE [Id]=@Id";
+
+                    cmd.Parameters.AddWithValue("@Code", poco.Code);
+                    cmd.Parameters.AddWithValue("@Name", poco.Name);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
         }
     }
 }

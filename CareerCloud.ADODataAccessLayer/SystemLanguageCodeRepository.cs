@@ -79,7 +79,27 @@ namespace CareerCloud.ADODataAccessLayer
 
         public void Update(params SystemLanguageCodePoco[] items)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                foreach (var poco in items)
+                {
+                    cmd.CommandText = @"UPDATE [dbo].[System_Language_Codes]
+                                       SET [LanguageID] = @LanguageID
+                                          ,[Name] = @Name
+                                          ,[Native_Name] = @Native_Name
+                                         WHERE [Id]=@Id";
+
+                    cmd.Parameters.AddWithValue("@LanguageID", poco.LanguageID);
+                    cmd.Parameters.AddWithValue("@Name", poco.Name);
+                    cmd.Parameters.AddWithValue("@Native_Name", poco.NativeName);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
         }
     }
 }
