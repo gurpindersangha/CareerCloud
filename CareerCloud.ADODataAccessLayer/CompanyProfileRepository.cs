@@ -94,7 +94,7 @@ namespace CareerCloud.ADODataAccessLayer
                     poco.CompanyWebsite = reader.GetString(2);
                     poco.ContactPhone = reader.GetString(3);
                     poco.ContactName = reader.GetString(4);
-                    poco.CompanyLogo = reader.GetByte(5);
+                   // poco.CompanyLogo = reader.GetByte(5);
                     poco.TimeStamp = (byte[])reader[6];
 
                     pocos[index] = poco;
@@ -113,8 +113,10 @@ namespace CareerCloud.ADODataAccessLayer
 
         public CompanyProfilePoco GetSingle(Expression<Func<CompanyProfilePoco, bool>> where, params Expression<Func<CompanyProfilePoco, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            IQueryable<CompanyProfilePoco> pocos = GetAll().AsQueryable();
+            return pocos.Where(where).FirstOrDefault();
         }
+    
 
         public void Remove(params CompanyProfilePoco[] items)
         {
