@@ -33,11 +33,11 @@ namespace CareerCloud.ADODataAccessLayer
                     comm.Connection = connection;
                     comm.CommandText = @"INSERT INTO [dbo].[System_Country_Codes]
                                    ([Code]
-                                   ,[Name]
+                                   ,[Name])
                              VALUES
                                    (
                                    @Code,
-                                   @Name,
+                                   @Name
                                   )";
 
                     comm.Parameters.AddWithValue("@Code", poco.Code);
@@ -68,7 +68,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                SystemCountryCodePoco[] pocos = new SystemCountryCodePoco[500];
+                SystemCountryCodePoco[] pocos = new SystemCountryCodePoco[2000];
                 int index = 0;
                 while (reader.Read())
                 {
@@ -127,7 +127,7 @@ namespace CareerCloud.ADODataAccessLayer
                     cmd.CommandText = @"UPDATE [dbo].[System_Country_Codes]
                                        SET [Code] = @Code
                                           ,[Name] = @Name
-                                         WHERE [Id]=@Id";
+                                         WHERE [Code]=@Code";
 
                     cmd.Parameters.AddWithValue("@Code", poco.Code);
                     cmd.Parameters.AddWithValue("@Name", poco.Name);

@@ -41,8 +41,7 @@ namespace CareerCloud.ADODataAccessLayer
                                    @Id,
                                    @Applicant,
                                    @Job,
-                                   @Start_Date,
-                                   @Appliaction_Date                               
+                                   @Application_Date                               
                                   )";
 
                     comm.Parameters.AddWithValue("@Id", poco.Id);
@@ -84,7 +83,7 @@ namespace CareerCloud.ADODataAccessLayer
                 {
                     ApplicantJobApplicationPoco poco = new ApplicantJobApplicationPoco();
                     poco.Id = reader.GetGuid(0);
-                    poco.Applicant = Guid.Parse((string)reader["Applicant"]);
+                    poco.Applicant = reader.GetGuid(1); //Guid.Parse((string)reader["Applicant"]);
                     poco.Job = reader.GetGuid(2);
                     poco.ApplicationDate = reader.GetDateTime(3);
                     poco.TimeStamp = (byte[])reader[4];

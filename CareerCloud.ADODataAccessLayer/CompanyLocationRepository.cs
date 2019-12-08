@@ -37,7 +37,7 @@ namespace CareerCloud.ADODataAccessLayer
                                    ,[State_Province_Code]
                                    ,[Street_Address]
                                    ,[City_Town]
-                                   ,[Zip_Postal_Code]
+                                   ,[Zip_Postal_Code])
                              VALUES
                                    (
                                    @Id,
@@ -46,7 +46,7 @@ namespace CareerCloud.ADODataAccessLayer
                                    @State_Province_Code,
                                    @Street_Address,
                                    @City_Town,
-                                   @Zip_Postal_Code,
+                                   @Zip_Postal_Code
                                   )";
 
                     comm.Parameters.AddWithValue("@Id", poco.Id);
@@ -88,7 +88,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                CompanyLocationPoco[] pocos = new CompanyLocationPoco[500];
+                CompanyLocationPoco[] pocos = new CompanyLocationPoco[2000];
                 int index = 0;
                 while (reader.Read())
                 {
@@ -98,8 +98,8 @@ namespace CareerCloud.ADODataAccessLayer
                     poco.CountryCode = reader.GetString(2);
                     poco.Province = reader.GetString(3);
                     poco.Street = reader.GetString(4);
-                    poco.City = reader.GetString(5);
-                    poco.PostalCode = reader.GetString(5);
+                    poco.City = reader["City_Town"].ToString();
+                    poco.PostalCode = reader["Zip_Postal_Code"].ToString();
                     poco.TimeStamp = (byte[])reader[7];
 
                     pocos[index] = poco;

@@ -112,16 +112,17 @@ namespace CareerCloud.ADODataAccessLayer
                 {
                     ApplicantWorkHistoryPoco poco = new ApplicantWorkHistoryPoco();
                     poco.Id = reader.GetGuid(0);
-                    poco.Applicant = Guid.Parse((string)reader["Applicant"]);
+                    poco.Applicant = reader.GetGuid(1); //Guid.Parse((string)reader["Applicant"]);
                     poco.CompanyName = reader.GetString(2);
                     poco.CountryCode = reader.GetString(3);
-                    poco.JobTitle = reader.GetString(4);
-                    poco.JobDescription = reader.GetString(5);
-                    poco.StartMonth = reader.GetInt16(6);
-                    poco.StartYear = reader.GetInt32(7);
-                    poco.EndMonth = reader.GetInt16(8);
-                    poco.EndYear = reader.GetInt32(9);
-                    poco.TimeStamp = (byte[])reader[10];
+                    poco.Location = reader.GetString(4);
+                    poco.JobTitle = reader.GetString(5);
+                    poco.JobDescription = reader.GetString(6);
+                    poco.StartMonth = reader.GetInt16(7);
+                    poco.StartYear = reader.GetInt32(8);
+                    poco.EndMonth = reader.GetInt16(9);
+                    poco.EndYear = reader.GetInt32(10);
+                    poco.TimeStamp = (byte[])reader[11];
 
                     pocos[index] = poco;
                     index++;

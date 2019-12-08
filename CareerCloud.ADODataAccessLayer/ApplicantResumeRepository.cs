@@ -82,9 +82,13 @@ namespace CareerCloud.ADODataAccessLayer
                 {
                     ApplicantResumePoco poco = new ApplicantResumePoco();
                     poco.Id = reader.GetGuid(0);
-                    poco.Applicant = Guid.Parse((string)reader["Applicant"]);
+                    poco.Applicant = reader.GetGuid(1);// Guid.Parse((string)reader["Applicant"]);
                     poco.Resume = reader.GetString(2);
-                    poco.LastUpdated = reader.GetDateTime(3);
+
+                    if (!reader.IsDBNull(3))
+                    {
+                        poco.LastUpdated = reader.GetDateTime(3);
+                    }
 
                     pocos[index] = poco;
                     index++;

@@ -99,7 +99,7 @@ namespace CareerCloud.ADODataAccessLayer
                 {
                     ApplicantSkillPoco poco = new ApplicantSkillPoco();
                     poco.Id = reader.GetGuid(0);
-                    poco.Applicant = Guid.Parse((string)reader["Applicant"]);
+                    poco.Applicant = reader.GetGuid(1); // Guid.Parse((string)reader["Applicant"]);
                     poco.Skill = reader.GetString(2);
                     poco.SkillLevel = reader.GetString(3);
                     poco.StartMonth = reader.GetByte(4);

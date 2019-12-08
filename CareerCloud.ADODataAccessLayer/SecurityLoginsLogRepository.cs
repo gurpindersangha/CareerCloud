@@ -35,14 +35,14 @@ namespace CareerCloud.ADODataAccessLayer
                                    ,[Login]
                                    ,[Source_IP]
                                    ,[Logon_Date]
-                                   ,[Is_Succesful]
+                                   ,[Is_Succesful])
                              VALUES
                                    (
                                    @Id,
                                    @Login,
                                    @Source_IP,
                                    @Logon_Date,
-                                   @Is_Succesful,
+                                   @Is_Succesful
                                   )";
 
                     comm.Parameters.AddWithValue("@Id", poco.Id);
@@ -79,17 +79,20 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                SecurityLoginsLogPoco[] pocos = new SecurityLoginsLogPoco[500];
+                SecurityLoginsLogPoco[] pocos = new SecurityLoginsLogPoco[2000];
                 int index = 0;
                 while (reader.Read())
                 {
                     SecurityLoginsLogPoco poco = new SecurityLoginsLogPoco();
                     poco.Id = reader.GetGuid(0);
                     poco.Login = reader.GetGuid(1);
-                    poco.SourceIP = reader.GetString(3);
-                    poco.LogonDate = reader.GetDateTime(4);
-                    poco.IsSuccesful = reader.GetBoolean(5);
-                    
+                    poco.SourceIP = reader["Source_IP"].ToString();
+
+
+                    poco.LogonDate = reader.GetDateTime(3);
+
+                    poco.IsSuccesful = reader.GetBoolean(4);
+
                     pocos[index] = poco;
                     index++;
                 }
@@ -151,7 +154,7 @@ namespace CareerCloud.ADODataAccessLayer
                     cmd.Parameters.AddWithValue("@Source_IP", poco.SourceIP);
                     cmd.Parameters.AddWithValue("@Logon_Date", poco.LogonDate);
                     cmd.Parameters.AddWithValue("@Is_Succesful", poco.IsSuccesful);
-                    
+
                     conn.Open();
                     cmd.ExecuteNonQuery();
                     conn.Close();

@@ -35,14 +35,14 @@ namespace CareerCloud.ADODataAccessLayer
                                    ,[Job]
                                    ,[Skill]
                                    ,[Skill_Level]
-                                   ,[Importance]
+                                   ,[Importance])
                              VALUES
                                    (
                                    @Id,
                                    @Job,
                                    @Skill,
                                    @Skill_Level,
-                                   @Importance,                               
+                                   @Importance                               
                                   )";
 
                     comm.Parameters.AddWithValue("@Id", poco.Id);
@@ -80,7 +80,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                CompanyJobSkillPoco[] pocos = new CompanyJobSkillPoco[500];
+                CompanyJobSkillPoco[] pocos = new CompanyJobSkillPoco[10000];
                 int index = 0;
                 while (reader.Read())
                 {

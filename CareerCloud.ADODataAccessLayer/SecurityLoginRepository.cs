@@ -43,7 +43,7 @@ namespace CareerCloud.ADODataAccessLayer
                                    ,[Phone_Number]
                                    ,[Full_Name]
                                    ,[Force_Change_Password]
-                                   ,[Prefferred_Language]
+                                   ,[Prefferred_Language])
                              VALUES
                                    (
                                    @Id,
@@ -58,7 +58,7 @@ namespace CareerCloud.ADODataAccessLayer
                                    @Phone_Number,
                                    @Full_Name,
                                    @Force_Change_Password,
-                                   @Prefferred_Language,
+                                   @Prefferred_Language
                                   )";
 
                     comm.Parameters.AddWithValue("@Id", poco.Id);
@@ -112,25 +112,34 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                SecurityLoginPoco[] pocos = new SecurityLoginPoco[500];
+                SecurityLoginPoco[] pocos = new SecurityLoginPoco[2000];
                 int index = 0;
                 while (reader.Read())
                 {
                     SecurityLoginPoco poco = new SecurityLoginPoco();
                     poco.Id = reader.GetGuid(0);
                     poco.Login = reader.GetString(1);
-                    poco.Password = reader.GetString(3);
-                    poco.Created = reader.GetDateTime(4);
-                    poco.PasswordUpdate = reader.GetDateTime(5);
-                    poco.AgreementAccepted = reader.GetDateTime(6);
-                    poco.IsLocked = reader.GetBoolean(7);
-                    poco.IsInactive = reader.GetBoolean(8);
-                    poco.EmailAddress = reader.GetString(9);
-                    poco.PhoneNumber = reader.GetString(10);
-                    poco.FullName = reader.GetString(11);
-                    poco.ForceChangePassword = reader.GetBoolean(12);
-                    poco.PrefferredLanguage = reader.GetString(13);
-                    poco.TimeStamp = (byte[])reader[14];
+                    poco.Password = reader["Password"].ToString();
+                    poco.Created = reader.GetDateTime(3);
+
+                    if (!reader.IsDBNull(4))
+                    {
+                        poco.PasswordUpdate = reader.GetDateTime(4);
+                    }
+
+                    if (!reader.IsDBNull(5))
+                    {
+                    poco.AgreementAccepted = reader.GetDateTime(5);
+                    }
+
+                    poco.IsLocked = reader.GetBoolean(6);
+                    poco.IsInactive = reader.GetBoolean(7);
+                    poco.EmailAddress = reader.GetString(8);
+                    poco.PhoneNumber = reader["Phone_Number"].ToString();
+                    poco.FullName = reader.GetString(10);
+                    poco.ForceChangePassword = reader.GetBoolean(11);
+                    poco.PrefferredLanguage = reader["Prefferred_Language"].ToString();
+                    poco.TimeStamp = (byte[])reader[13];
 
                     pocos[index] = poco;
                     index++;

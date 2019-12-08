@@ -34,12 +34,12 @@ namespace CareerCloud.ADODataAccessLayer
                     comm.CommandText = @"INSERT INTO [dbo].[Security_Roles]
                                    ([Id]
                                    ,[Role]
-                                   ,[Is_Inactive]
+                                   ,[Is_Inactive])
                              VALUES
                                    (
                                    @Id,
                                    @Role,
-                                   @Is_Inactive,
+                                   @Is_Inactive
                                   )";
 
                     comm.Parameters.AddWithValue("@Id", poco.Id);
@@ -72,7 +72,7 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                SecurityRolePoco[] pocos = new SecurityRolePoco[500];
+                SecurityRolePoco[] pocos = new SecurityRolePoco[2000];
                 int index = 0;
                 while (reader.Read())
                 {

@@ -33,12 +33,12 @@ namespace CareerCloud.ADODataAccessLayer
                     comm.CommandText = @"INSERT INTO [dbo].[System_Language_Codes]
                                    ([LanguageID]
                                    ,[Name]
-                                   ,[Native_Name]
+                                   ,[Native_Name])
                              VALUES
                                    (
                                    @LanguageID,
                                    @Name,
-                                   @Native_Name,
+                                   @Native_Name
                                   )";
 
                     comm.Parameters.AddWithValue("@LanguageID", poco.LanguageID);
@@ -132,7 +132,7 @@ namespace CareerCloud.ADODataAccessLayer
                                        SET [LanguageID] = @LanguageID
                                           ,[Name] = @Name
                                           ,[Native_Name] = @Native_Name
-                                         WHERE [Id]=@Id";
+                                         WHERE [LanguageID]=@LanguageID";
 
                     cmd.Parameters.AddWithValue("@LanguageID", poco.LanguageID);
                     cmd.Parameters.AddWithValue("@Name", poco.Name);

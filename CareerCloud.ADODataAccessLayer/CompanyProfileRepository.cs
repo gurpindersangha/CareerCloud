@@ -36,7 +36,7 @@ namespace CareerCloud.ADODataAccessLayer
                                    ,[Company_Website]
                                    ,[Contact_Phone]
                                    ,[Contact_Name]
-                                   ,[Company_Logo]
+                                   ,[Company_Logo])
                              VALUES
                                    (
                                    @Id,
@@ -44,7 +44,7 @@ namespace CareerCloud.ADODataAccessLayer
                                    @Company_Website,
                                    @Contact_Phone,
                                    @Contact_Name,
-                                   @Company_logo,
+                                   @Company_logo
                                   )";
 
                     comm.Parameters.AddWithValue("@Id", poco.Id);
@@ -84,17 +84,20 @@ namespace CareerCloud.ADODataAccessLayer
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                CompanyProfilePoco[] pocos = new CompanyProfilePoco[500];
+                CompanyProfilePoco[] pocos = new CompanyProfilePoco[2000];
                 int index = 0;
                 while (reader.Read())
                 {
                     CompanyProfilePoco poco = new CompanyProfilePoco();
                     poco.Id = reader.GetGuid(0);
                     poco.RegistrationDate = reader.GetDateTime(1);
-                    poco.CompanyWebsite = reader.GetString(2);
-                    poco.ContactPhone = reader.GetString(3);
-                    poco.ContactName = reader.GetString(4);
-                   // poco.CompanyLogo = reader.GetByte(5);
+                    poco.CompanyWebsite = reader["Company_Website"].ToString();
+                    poco.ContactPhone = reader["Contact_Phone"].ToString();
+                    poco.ContactName = reader["Contact_Name"].ToString();
+
+                    if(!reader.IsDBNull(5))
+                    poco.CompanyLogo = (byte[])reader[5];
+
                     poco.TimeStamp = (byte[])reader[6];
 
                     pocos[index] = poco;

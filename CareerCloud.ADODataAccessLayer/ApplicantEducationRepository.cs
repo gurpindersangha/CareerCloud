@@ -94,7 +94,8 @@ namespace CareerCloud.ADODataAccessLayer
                 {
                     ApplicantEducationPoco poco = new ApplicantEducationPoco();
                     poco.Id = reader.GetGuid(0);
-                    poco.Applicant = Guid.Parse((string)reader["Applicant"]);
+                    poco.Applicant = reader.GetGuid(1);
+                    //poco.Applicant = Guid.Parse((string)reader["Applicant"]);
                     poco.Major = reader.GetString(2);
                     poco.CertificateDiploma = reader.GetString(3);
                     poco.StartDate = reader.GetDateTime(4);
@@ -152,12 +153,12 @@ namespace CareerCloud.ADODataAccessLayer
                 {
                     cmd.CommandText = @"UPDATE [dbo].[Applicant_Educations]
                                            SET
-                                              ,[Applicant] = @Applicant, 
-                                              ,[Major] = @Major,
-                                              ,[Certificate_Diploma] = @Certificate_Diploma, 
-                                              ,[Start_Date] = @Start_Date,
-                                              ,[Completion_Date] = @Completion_Date, 
-                                              ,[Completion_Percent] = @Completion_Percent, 
+                                              [Applicant] = @Applicant, 
+                                              [Major] = @Major,
+                                              [Certificate_Diploma] = @Certificate_Diploma, 
+                                              [Start_Date] = @Start_Date,
+                                              [Completion_Date] = @Completion_Date, 
+                                              [Completion_Percent] = @Completion_Percent 
                                          WHERE [Id]=@Id";
 
                     cmd.Parameters.AddWithValue("@Id", poco.Id);
