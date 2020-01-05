@@ -11,7 +11,7 @@ namespace CareerCloud.BusinessLogicLayer
         public SystemCountryCodeLogic(IDataRepository<SystemCountryCodePoco> repository)
         {
         }
-        protected override void Verify(SystemCountryCodePoco[] pocos)
+        protected void Verify(SystemCountryCodePoco[] pocos)
         {
             List<ValidationException> exceptions = new List<ValidationException>();
 
@@ -31,12 +31,12 @@ namespace CareerCloud.BusinessLogicLayer
                 throw new AggregateException(exceptions);
             }
         }
-        public override void Add(SystemCountryCodePoco[] pocos)
+        public void Add(SystemCountryCodePoco[] pocos)
         {
             Verify(pocos);
             Add(pocos);
         }
-        public override void Update(SystemCountryCodePoco[] pocos)
+        public void Update(SystemCountryCodePoco[] pocos)
         {
             Verify(pocos);
             Update(pocos);

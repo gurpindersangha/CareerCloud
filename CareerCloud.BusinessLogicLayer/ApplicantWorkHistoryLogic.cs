@@ -17,7 +17,7 @@ namespace CareerCloud.BusinessLogicLayer
 
             foreach (ApplicantWorkHistoryPoco poco in pocos)
             {
-                if (poco.CompanyName.Length < 2)
+                if (poco.CompanyName.Length < 3)
                 {
                     exceptions.Add(new ValidationException(105, "Company name  must be greater than 2 char..."));
 

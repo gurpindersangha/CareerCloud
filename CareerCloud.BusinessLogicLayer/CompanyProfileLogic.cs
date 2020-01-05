@@ -19,13 +19,21 @@ namespace CareerCloud.BusinessLogicLayer
 
             foreach (var poco in pocos)
             {
-                if (!requiredEndExtention.Any(t => poco.CompanyWebsite.EndsWith(t)))
+                if (string.IsNullOrEmpty(poco.CompanyWebsite))
+                {
+                    exceptions.Add(new ValidationException(600, "Company Website Cannot be empty fix it!"));
+                }
+                else if (!requiredEndExtention.Any(t => poco.CompanyWebsite.EndsWith(t)))
                 {
                     exceptions.Add(new ValidationException(600, "Website must end with .ca, .com or biz"));
                 }
 
                 string[] ContactPhone = poco.ContactPhone.Split('-');
-                if (ContactPhone.Length != 3)
+                if (string.IsNullOrEmpty(poco.ContactPhone))
+                {
+                    exceptions.Add(new ValidationException(106, "Phone  Cannot be empty fix it!"));
+                }
+                else if (ContactPhone.Length != 10)
                 {
                     exceptions.Add(new ValidationException(601, "PhoneNumber for Company website is not in the required format."));
                 }

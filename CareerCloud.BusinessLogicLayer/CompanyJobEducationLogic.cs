@@ -17,7 +17,11 @@ namespace CareerCloud.BusinessLogicLayer
 
             foreach (CompanyJobEducationPoco poco in pocos)
             {
-                if (poco.Major.Length < 2)
+                if (string.IsNullOrEmpty(poco.Major))
+                {
+                    exceptions.Add(new ValidationException(200, "Major  Cannot be empty fix it!"));
+                }
+                else if (poco.Major.Length < 2)
                 {
                     exceptions.Add(new ValidationException(200, "Major must be at least 2 char.."));
                 }
