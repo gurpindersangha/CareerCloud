@@ -35,6 +35,17 @@ namespace CareerCloud.BusinessLogicLayer
                 throw new AggregateException(exceptions);
             }
         }
+
+        public void Get(SystemLanguageCodePoco[] pocos)
+        {
+        }
+        public void GetAll(SystemLanguageCodePoco[] pocos)
+        {
+        }
+        public void Delete(SystemLanguageCodePoco[] pocos)
+        {  
+        }
+
         public void Add(SystemLanguageCodePoco[] pocos)
         {
             Verify(pocos);

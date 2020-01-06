@@ -41,5 +41,16 @@ namespace CareerCloud.BusinessLogicLayer
             Verify(pocos);
             Update(pocos);
         }
+
+        public void Get(SystemCountryCodePoco[] pocos)
+        {
+        }
+        public void GetAll(SystemCountryCodePoco[] pocos)
+        {
+        }
+        public void Delete(SystemCountryCodePoco[] pocos)
+        {
+        }
+
     }
 }

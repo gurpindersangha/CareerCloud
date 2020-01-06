@@ -21,40 +21,47 @@ namespace CareerCloud.BusinessLogicLayer
             {
                 if (string.IsNullOrEmpty(poco.CompanyWebsite))
                 {
-                    exceptions.Add(new ValidationException(600, "Company Website Cannot be empty fix it!"));
+                    exceptions.Add(new ValidationException(600, "Website cannot be empty"));
+
                 }
                 else if (!requiredEndExtention.Any(t => poco.CompanyWebsite.EndsWith(t)))
                 {
-                    exceptions.Add(new ValidationException(600, "Website must end with .ca, .com or biz"));
+                    exceptions.Add(new ValidationException(600, $"Website {poco.CompanyWebsite} must end with .ca, .com or biz"));
                 }
-
-                string[] ContactPhone = poco.ContactPhone.Split('-');
                 if (string.IsNullOrEmpty(poco.ContactPhone))
                 {
-                    exceptions.Add(new ValidationException(106, "Phone  Cannot be empty fix it!"));
+                    exceptions.Add(new ValidationException(601, "PhoneNumber is not valid phone number"));
                 }
-                else if (ContactPhone.Length != 10)
+                else
                 {
-                    exceptions.Add(new ValidationException(601, "PhoneNumber for Company website is not in the required format."));
-                }
-                else if (ContactPhone[0].Length != 3)
-                {
-                    exceptions.Add(new ValidationException(601, "PhoneNumber for Company website is not in the required format."));
-                }
-                else if (ContactPhone[1].Length != 3)
-                {
-                    exceptions.Add(new ValidationException(601, "PhoneNumber for Company website is not in the required format."));
-                }
-                else if (ContactPhone[2].Length != 4)
-                {
-                    exceptions.Add(new ValidationException(601, "PhoneNumber for Company website is not in the required format."));
+                    string[] ContactPhone = poco.ContactPhone.Split('-');
+                    if (ContactPhone.Length != 3)
+                    {
+                        exceptions.Add(new ValidationException(601, "PhoneNumber  is not in the required format."));
+                    }
+                    else
+
+                        if (ContactPhone[0].Length != 3)
+                    {
+                        exceptions.Add(new ValidationException(601, "PhoneNumber  is not in the required format."));
+                    }
+                    else if (ContactPhone[1].Length != 3)
+                    {
+                        exceptions.Add(new ValidationException(601, "PhoneNumber  is not in the required format."));
+                    }
+                    else if (ContactPhone[2].Length != 4)
+                    {
+                        exceptions.Add(new ValidationException(601, "PhoneNumber  is not in the required format."));
+                    }
                 }
             }
+
             if (exceptions.Count > 0)
             {
                 throw new AggregateException(exceptions);
             }
         }
+
         public override void Add(CompanyProfilePoco[] pocos)
         {
             Verify(pocos);
@@ -67,3 +74,4 @@ namespace CareerCloud.BusinessLogicLayer
         }
     }
 }
+
