@@ -7,25 +7,22 @@ using System.Text;
 namespace CareerCloud.Pocos
 {
     [Table("Applicant_Job_Applications")]
-    public class ApplicantJobApplicationPoco : IPoco
+    public class ApplicantJobApplicationPoco:IPoco
+
     {
         [Key]
         public Guid Id { get; set; }
-
-        [ForeignKey("")]
+        [ForeignKey("FK_Applicant_Job_Applications_Applicant_Profiles")]
         public Guid Applicant { get; set; }
-
-        [ForeignKey("")]
+        [ForeignKey("FK_Applicant_Job_Applications_Company_Jobs")]
         public Guid Job { get; set; }
-
         [Column("Application_Date")]
         public DateTime ApplicationDate { get; set; }
-
         [Column("Time_Stamp")]
         [NotMapped]
-        public byte[] TimeStamp { get; set; }
+        public Byte[] TimeStamp { get; set; }
 
         public virtual ApplicantProfilePoco ApplicantProfile { get; set; }
-        public virtual CompanyJobPoco CompanyJob { get; set; }
+        public virtual CompanyJobPoco CompanyJob  { get; set; }
     }
 }

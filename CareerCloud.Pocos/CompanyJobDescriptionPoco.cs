@@ -9,23 +9,19 @@ namespace CareerCloud.Pocos
     [Table("Company_Jobs_Descriptions")]
     public class CompanyJobDescriptionPoco : IPoco
     {
+
         [Key]
         public Guid Id { get; set; }
-        
-        [ForeignKey("")]
+        [ForeignKey("FK_Company_Jobs_Company_Profiles")]
         public Guid Job { get; set; }
-        
         [Column("Job_Name")]
-        [StringLength(100)]
         public string JobName { get; set; }
-        
         [Column("Job_Descriptions")]
-        [StringLength(1000)]
         public string JobDescriptions { get; set; }
-        
         [Column("Time_Stamp")]
         [NotMapped]
-        public byte[] TimeStamp { get; set; }
+        public Byte[] TimeStamp { get; set; }
+
         public virtual CompanyJobPoco CompanyJob { get; set; }
     }
 }

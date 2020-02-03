@@ -7,41 +7,26 @@ using System.Text;
 namespace CareerCloud.Pocos
 {
     [Table("Company_Locations")]
-    public class CompanyLocationPoco : IPoco
+    public class CompanyLocationPoco:IPoco
     {
         [Key]
         public Guid Id { get; set; }
-        
-        [ForeignKey("")]
+        [ForeignKey("FK_Company_Locations_Company_Profiles")]
         public Guid Company { get; set; }
-        
         [Column("Country_Code")]
-        [StringLength(10)]
         public string CountryCode { get; set; }
-        
-        
         [Column("State_Province_Code")]
-        [StringLength(10)]
-        public string Province{ get; set; }
-        
-        
+        public string Province { get; set; }
         [Column("Street_Address")]
-        [StringLength(100)]
-        public string Street{ get; set; }
-        
-        
+        public string Street { get; set; }
         [Column("City_Town")]
-        [StringLength(100)]
         public string City { get; set; }
-        
-        
         [Column("Zip_Postal_Code")]
-        [StringLength(20)]
         public string PostalCode { get; set; }
-        
         [Column("Time_Stamp")]
         [NotMapped]
-        public byte[] TimeStamp { get; set; }
+        public Byte[] TimeStamp { get; set; }
+
         public virtual CompanyProfilePoco CompanyProfile { get; set; }
     }
 }

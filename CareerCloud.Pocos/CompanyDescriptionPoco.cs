@@ -7,30 +7,26 @@ using System.Text;
 namespace CareerCloud.Pocos
 {
     [Table("Company_Descriptions")]
-    public class CompanyDescriptionPoco : IPoco
+    public class CompanyDescriptionPoco:IPoco
     {
         [Key]
         public Guid Id { get; set; }
-        
-        [ForeignKey("")]
+
+        [ForeignKey("FK_Company_Descriptions_Company_Profiles")]
         public Guid Company { get; set; }
 
-        [StringLength(10)]
-        [ForeignKey("")]
+        [ForeignKey("FK_Company_Descriptions_System_Language_Codes")]
         public string LanguageId { get; set; }
-
         [Column("Company_Name")]
-        [StringLength(50)]
         public string CompanyName { get; set; }
-
-        [StringLength(1000)]
         [Column("Company_Description")]
         public string CompanyDescription { get; set; }
-
         [Column("Time_Stamp")]
         [NotMapped]
-        public byte[] TimeStamp { get; set; }
+        public Byte[] TimeStamp { get; set; }
+
         public virtual CompanyProfilePoco CompanyProfile { get; set; }
+
         public virtual SystemLanguageCodePoco SystemLanguageCode { get; set; }
     }
 }

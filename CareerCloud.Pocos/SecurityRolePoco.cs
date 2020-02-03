@@ -7,16 +7,16 @@ using System.Text;
 namespace CareerCloud.Pocos
 {
     [Table("Security_Roles")]
-    public class SecurityRolePoco : IPoco
+    public class SecurityRolePoco :IPoco
     {
         [Key]
         public Guid Id { get; set; }
-        
-        [StringLength(50)]
+       
         public string Role { get; set; }
-        
         [Column("Is_Inactive")]
-        public bool IsInactive { get; set; }
-        public virtual ICollection<SecurityLoginsRolePoco> SecurityLoginsRoles { get; set; }
+        public Boolean IsInactive { get; set; }
+
+        public virtual ICollection<SecurityLoginsRolePoco> SecurityLoginsRole { get; set; }
+
     }
 }

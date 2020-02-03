@@ -10,13 +10,10 @@ namespace CareerCloud.Pocos
     public class SystemCountryCodePoco
     {
         [Key]
-        [StringLength(10)]
         public string Code { get; set; }
-        
-        [StringLength(50)]
         public string Name { get; set; }
-        public virtual ICollection<ApplicantProfilePoco> ApplicantProfiles { get; set; }
-        public virtual ICollection<ApplicantWorkHistoryPoco> ApplicantWorkHistories { get; set; }
-        public virtual ICollection<CompanyDescriptionPoco> CompanyDescriptions { get; set; }
+
+        public virtual ICollection<ApplicantProfilePoco> ApplicantProfile  { get; set; }
+        public virtual ICollection<ApplicantWorkHistoryPoco> ApplicantWorkHistory { get; set; }
     }
 }

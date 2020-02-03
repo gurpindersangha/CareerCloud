@@ -7,38 +7,28 @@ using System.Text;
 namespace CareerCloud.Pocos
 {
     [Table("Company_Profiles")]
-    public class CompanyProfilePoco : IPoco
+    public class CompanyProfilePoco: IPoco
     {
         [Key]
         public Guid Id { get; set; }
-        
         [Column("Registration_Date")]
         public DateTime RegistrationDate { get; set; }
-        
         [Column("Company_Website")]
-        [StringLength(100)]
-        public string  CompanyWebsite{ get; set; }
-        
-        
+        public string CompanyWebsite { get; set; }
         [Column("Contact_Phone")]
-        [StringLength(20)]
-        public string  ContactPhone { get; set; }
-        
-        
+        public string ContactPhone { get; set; }
         [Column("Contact_Name")]
-        [StringLength(50)]
-        public string  ContactName { get; set; }
-        
-        
+        public string ContactName { get; set; }
         [Column("Company_Logo")]
-        public byte[]  CompanyLogo { get; set; }
-
+        public Byte[] CompanyLogo { get; set; }
         [Column("Time_Stamp")]
         [NotMapped]
-        public byte[] TimeStamp { get; set; }
-        public virtual ICollection<CompanyDescriptionPoco> CompanyDescriptions { get; set; }
-        public virtual ICollection<CompanyJobPoco> CompanyJobs { get; set; }
-        public virtual ICollection<CompanyLocationPoco> CompanyLocations { get; set; }
+        public Byte[] TimeStamp { get; set; }
 
+        public virtual ICollection<CompanyDescriptionPoco> CompanyDescription { get; set; }
+
+        public virtual ICollection<CompanyJobPoco> CompanyJob  { get; set; }
+
+        public virtual ICollection<CompanyLocationPoco> CompanyLocation { get; set; }
     }
 }

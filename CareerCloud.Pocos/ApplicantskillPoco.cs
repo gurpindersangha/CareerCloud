@@ -6,37 +6,31 @@ using System.Text;
 
 namespace CareerCloud.Pocos
 {
-    [Table("Applicant_Skills")]
+    [Table ("Applicant_Skills")]
     public class ApplicantSkillPoco : IPoco
     {
         [Key]
         public Guid Id { get; set; }
-        
-        [ForeignKey("")]
-        public Guid Applicant { get; set; }
-        
-        [StringLength(100)]
-        public string Skill { get; set; }
 
+        [ForeignKey("FK_Applicant_Skills_Applicant_Profiles")]
+        public Guid Applicant { get; set; }
+        public string Skill { get; set; }
         [Column("Skill_Level")]
-        [StringLength(10)]
-        public  string SkillLevel { get; set; }
-        
+        public string SkillLevel { get; set; }
         [Column("Start_Month")]
-        public byte StartMonth { get; set; }
-        
+        public Byte StartMonth { get; set; }
         [Column("Start_Year")]
         public int StartYear { get; set; }
-        
         [Column("End_Month")]
-        public byte EndMonth { get; set; }
-        
+        public Byte EndMonth { get; set; }
         [Column("End_Year")]
         public int EndYear { get; set; }
-        
         [Column("Time_Stamp")]
         [NotMapped]
-        public byte[] TimeStamp { get; set; }
+        public Byte[] TimeStamp { get; set; }
+
         public virtual ApplicantProfilePoco ApplicantProfile { get; set; }
+
+        //public virtual SystemCountryCodePoco SystemCountryCode  { get; set; }
     }
 }

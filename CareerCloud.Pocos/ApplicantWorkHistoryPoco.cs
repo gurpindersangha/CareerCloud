@@ -11,46 +11,31 @@ namespace CareerCloud.Pocos
     {
         [Key]
         public Guid Id { get; set; }
-        
-        [ForeignKey("")]
+        [ForeignKey("FK_Applicant_Work_Experiences_Applicant_Profiles")]
         public Guid Applicant { get; set; }
-        
         [Column("Company_Name")]
-        [StringLength(150)]
         public string CompanyName { get; set; }
-        
         [Column("Country_Code")]
-        [ForeignKey("")]
+        [ForeignKey("FK_Applicant_Work_History_System_Country_Codes")]
         public string CountryCode { get; set; }
-        
-        [StringLength(50)]
         public string Location { get; set; }
-        
         [Column("Job_Title")]
-        [StringLength(50)]
         public string JobTitle { get; set; }
-        
         [Column("Job_Description")]
-        [StringLength(500)]
         public string JobDescription { get; set; }
-        
         [Column("Start_Month")]
         public short StartMonth { get; set; }
-        
         [Column("Start_Year")]
         public int StartYear { get; set; }
-        
         [Column("End_Month")]
         public short EndMonth { get; set; }
-        
         [Column("End_Year")]
         public int EndYear { get; set; }
-        
         [Column("Time_Stamp")]
         [NotMapped]
-        public byte[] TimeStamp { get; set; }
+        public Byte[] TimeStamp { get; set; }
+
         public virtual ApplicantProfilePoco ApplicantProfile { get; set; }
         public virtual SystemCountryCodePoco SystemCountryCode { get; set; }
-
     }
 }
